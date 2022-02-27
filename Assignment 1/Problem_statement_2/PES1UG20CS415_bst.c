@@ -48,9 +48,14 @@ int search(const bst_t *tree, int key, int *count_ptr){
 }
 
 // Returns the maximum element in the BST
-int find_max(const bst_t *tree, int *count_ptr)
-{
-
+int find_max(const bst_t *tree, int *count_ptr){
+    node_t *temp;
+    temp = findMaxNode(tree->root,count_ptr);
+    int maxValue = -1;
+    if(temp != NULL){
+        maxValue = temp->key;
+    }
+    return maxValue;
 }
 
 // Deletes all the elements of the bst
@@ -147,4 +152,15 @@ node_t* searchNode(node_t *root,int key,int *count_ptr){
     else{
         return searchNode(root->left,key,count_ptr);
     }
+}
+
+node_t* findMaxNode(node_t *root,int *count_ptr){
+    if(root == NULL){
+        return NULL;
+    }
+    else if(root->right !=NULL){
+        (*count_ptr)++;
+        return findMaxNode(root->right,count_ptr);
+    }
+    return root;
 }
