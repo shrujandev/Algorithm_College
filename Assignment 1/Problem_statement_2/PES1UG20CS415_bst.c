@@ -11,6 +11,13 @@
  ** operations need to be stored in the location pointed by it
  ** The implementation can assume it is initialized to 0.
 */
+void freeNode(node_t *root);
+node_t* findMaxNode(node_t *root,int *count_ptr);
+node_t* searchNode(node_t *root,int key,int *count_ptr);
+node_t* findMinNode(node_t *root);
+node_t* deleteNode(node_t *root,int key,int *count_ptr);
+node_t* insertNode(node_t *root,int key,int *count_ptr);
+node_t* createNode(int key);
 
 // Initializes the root of the bst
 void init_bst(bst_t *bst){
@@ -68,6 +75,8 @@ void free_bst(bst_t *bst) {
 // Deletes all the elements if the bst and ensures it can be used again
 void clear_bst(bst_t *bst)
 {
+    freeNode(bst->root);
+    bst->root = NULL;
 
 }
 
@@ -168,7 +177,7 @@ node_t* findMaxNode(node_t *root,int *count_ptr){
 
 void freeNode(node_t *root){
     if(root == NULL){
-        return NULL;
+        return;
     }
     freeNode(root->right);
     freeNode(root->left);
