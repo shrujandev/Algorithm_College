@@ -29,8 +29,8 @@ void insert(bst_t *tree, int key, int *count_ptr){
 
 // Delete key from the BST
 // Replaces node with in-order successor
-void delete_element(bst_t *tree, int key, int *count_ptr)
-{
+void delete_element(bst_t *tree, int key, int *count_ptr){
+        tree->root = deleteNode(tree->root,key,count_ptr);
 
 }
 
@@ -78,6 +78,43 @@ node_t* insertNode(node_t *root,int key,int *count_ptr){
     }    
     else{
         root->left = insertNode(root->left,key,count_ptr);
+    }
+    return root;
+}
+
+node_t *deleteNode(node_t *root,int key,int *count_ptr){
+    if(root == NULL){
+        return NULL;
+    }
+    if(key > root->key){
+        root->right = deleteNode(root->right,key,count_ptr);
+    }
+    else if(key < root->key){
+        root->left = deleteNode(root->left,key,count_ptr);
+    }
+    else{
+        if(root->left == NULL && root->right == NULL){
+            free(root);
+            return NULL;
+        }
+        else if(root->left == NULL || root->right == NULL){
+            node_t *temp;
+            if(root->left == NULL){
+                temp = root->right;
+            }
+            else{
+                temp = root->left;
+            }
+            free(root);
+            return temp;
+
+        }
+        else{
+            node_t *temp = findMinNode(root->right);
+            root->key = temp->key;
+            root->right = deleteNode(root->right,temp->key,count_ptr);
+        }
+        
     }
     return root;
 }
