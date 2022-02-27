@@ -59,8 +59,9 @@ int find_max(const bst_t *tree, int *count_ptr){
 }
 
 // Deletes all the elements of the bst
-void free_bst(bst_t *bst) 
-{
+void free_bst(bst_t *bst) {
+    freeNode(bst->root);
+    free(bst);
 
 }
 
@@ -163,4 +164,14 @@ node_t* findMaxNode(node_t *root,int *count_ptr){
         return findMaxNode(root->right,count_ptr);
     }
     return root;
+}
+
+void freeNode(node_t *root){
+    if(root == NULL){
+        return NULL;
+    }
+    freeNode(root->right);
+    freeNode(root->left);
+    free(root);
+
 }
