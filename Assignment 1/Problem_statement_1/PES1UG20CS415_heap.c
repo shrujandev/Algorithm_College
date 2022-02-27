@@ -1,4 +1,4 @@
-// Name:Shrujan
+// Name:SHRUJAN
 // SRN: PES1UG20CS415
 #include "heap.h"
 #include <stdlib.h>
