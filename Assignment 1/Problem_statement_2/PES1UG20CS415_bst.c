@@ -14,7 +14,7 @@
 
 // Initializes the root of the bst
 void init_bst(bst_t *bst){
-    bst->root = (node_t*)malloc(sizeof(node_t));
+    bst->root = NULL;
     
 
 }
@@ -23,7 +23,7 @@ void init_bst(bst_t *bst){
 // Stores the number of comparisons at the location
 // pointed by count_ptr
 void insert(bst_t *tree, int key, int *count_ptr){
-    
+    tree->root = insertNode(tree->root,key,count_ptr);
 
 }
 
@@ -57,4 +57,27 @@ void free_bst(bst_t *bst)
 void clear_bst(bst_t *bst)
 {
 
+}
+
+
+node_t* createNode(int key){
+    node_t *element = (node_t*)malloc(sizeof(node_t));
+    element->key = key;
+    element->left = element->right = NULL;
+    return element;
+}
+
+node_t* insertNode(node_t *root,int key,int *count_ptr){
+    (*count_ptr)++;
+    if(root == NULL){
+        return(createNode(key));
+
+    }
+    else if(key > root->key){
+        root->right = insertNode(root->right,key,count_ptr);
+    }    
+    else{
+        root->left = insertNode(root->left,key,count_ptr);
+    }
+    return root;
 }
