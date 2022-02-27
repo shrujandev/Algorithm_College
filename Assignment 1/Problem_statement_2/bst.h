@@ -1,6 +1,6 @@
 #ifndef BST_H_
 #define BST_H_
-
+ 
 struct node
 {
     int key;

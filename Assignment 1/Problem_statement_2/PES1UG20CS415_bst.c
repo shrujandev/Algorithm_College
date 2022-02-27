@@ -1,5 +1,5 @@
-// Name:
-// SRN: 
+// Name:SHRUJAN
+// SRN: PES1UG20CS415
 #include "bst.h"
 #include <stdlib.h>
 
@@ -13,16 +13,17 @@
 */
 
 // Initializes the root of the bst
-void init_bst(bst_t *bst)
-{
+void init_bst(bst_t *bst){
+    bst->root = (node_t*)malloc(sizeof(node_t));
+    
 
 }
 
 // Inserts element key into the Binary search tree
 // Stores the number of comparisons at the location
 // pointed by count_ptr
-void insert(bst_t *tree, int key, int *count_ptr)
-{
+void insert(bst_t *tree, int key, int *count_ptr){
+    
 
 }
 
