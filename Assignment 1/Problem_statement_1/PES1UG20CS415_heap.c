@@ -29,8 +29,8 @@ void init_heap(heap_t *heap, int max_size) {
 // location pointed to by count_ptr.
 void insert(heap_t *heap, int key, int *count_ptr) {
     if(heap->size < heap->max_size){
-        heap->size++;
         heap->arr[heap->size] = key;
+        heap->size++;
         int heapifyLoop = 1;
         for(int parentNode=(heap->size)/2-1;parentNode>=0;parentNode--){
             heapify(heap,parentNode,heapifyLoop,count_ptr);
@@ -48,7 +48,7 @@ int extract_max(heap_t *heap, int *count_ptr) {
     int maxValue = -1;
     if(heap->size >= 0){
         maxValue = heap->arr[0];
-        heap->arr[0]=0;
+        heap->arr[0]=-1;
         heap->size--;
         for(int parentNode=(heap->size)/2-1;parentNode>=0;parentNode--){
             heapify(heap,parentNode,1,count_ptr);
@@ -57,7 +57,6 @@ int extract_max(heap_t *heap, int *count_ptr) {
     return maxValue;
     
 }
-
 // Searches for the element key in the heap
 // Returns the element if found, else -1
 int search(const heap_t *heap, int key, int *count_ptr) {
@@ -65,7 +64,7 @@ int search(const heap_t *heap, int key, int *count_ptr) {
     int notFound = 1;
     for(int i =0 ;i<heap->size && notFound ;i++){
         if(heap->arr[i]==key){
-            searchElement = i;
+            searchElement = key;
             notFound = 0;
             *count_ptr++;
         }
@@ -77,20 +76,41 @@ int search(const heap_t *heap, int key, int *count_ptr) {
 // and store the number of key comparisons made in the
 // location pointed to by count_ptr.
 int find_max(const heap_t *heap, int *count_ptr) {
-    
+    int maxValue = -1;
+    if(heap->size >=0){
+        maxValue = heap->arr[0];
+    }
+    return maxValue;
 }
 
 // Returns the minimum value in the heap
-int find_min(const heap_t *heap, int *count_ptr) {}
+int find_min(const heap_t *heap, int *count_ptr) {
+    int minValue = heap->arr[(heap->size)/2];
+    for(int i = heap->arr[(heap->size)/2 -1];i<=heap->size;i++){
+        if(minValue > heap->arr[i]){
+            *count_ptr++;
+            minValue = heap->arr[i];
+        }
+    }
+}
 
 // Clears the heap for reuse
-void clear_heap(heap_t *heap) {}
+void clear_heap(heap_t *heap) {
+    for(int i=0;i<heap->max_size;i++){
+        heap->arr[i]=0;
+    }
+    heap->size = 0;
+}
 
 // Frees all resources acquired to initialize heap
-void free_heap(heap_t *heap) {}
+void free_heap(heap_t *heap) {
+    free(heap->arr);
 
-static void heapify(heap_t *heap,int parentNode,int heapifyLoop,int *count_ptr){
-    while(heapifyLoop){
+}
+    
+
+void heapify(heap_t *heap,int parentNode,int heapifyLoop,int *count_ptr){
+    while(heapifyLoop == 1){
                 if(heap->size !=1){
                     int largest = parentNode;
                     int leftNode = 2*parentNode+1;
@@ -106,7 +126,7 @@ static void heapify(heap_t *heap,int parentNode,int heapifyLoop,int *count_ptr){
                     if(largest != parentNode){
                         int temp = heap->arr[largest];
                         heap->arr[largest] = heap->arr[parentNode];
-                        heap->arr[parentNode] = heap->arr[largest];
+                        heap->arr[parentNode] = temp;
                         parentNode = largest ; 
                     }
                     else{
