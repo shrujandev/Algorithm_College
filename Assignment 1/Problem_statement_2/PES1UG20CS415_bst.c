@@ -124,6 +124,7 @@ node_t* deleteNode(node_t *root,int key,int *count_ptr){
         root->left = deleteNode(root->left,key,count_ptr);
     }
     else{
+        //no children
         if(root->left == NULL && root->right == NULL){
             (*count_ptr)++;
             free(root);
