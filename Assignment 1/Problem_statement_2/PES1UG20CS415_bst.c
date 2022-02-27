@@ -11,13 +11,13 @@
  ** operations need to be stored in the location pointed by it
  ** The implementation can assume it is initialized to 0.
 */
-void freeNode(node_t *root);
-node_t* findMaxNode(node_t *root,int *count_ptr);
-node_t* searchNode(node_t *root,int key,int *count_ptr);
-node_t* findMinNode(node_t *root);
-node_t* deleteNode(node_t *root,int key,int *count_ptr);
-node_t* insertNode(node_t *root,int key,int *count_ptr);
-node_t* createNode(int key);
+static void freeNode(node_t *root);
+static node_t* findMaxNode(node_t *root,int *count_ptr);
+static node_t* searchNode(node_t *root,int key,int *count_ptr);
+static node_t* findMinNode(node_t *root);
+static node_t* deleteNode(node_t *root,int key,int *count_ptr);
+static node_t* insertNode(node_t *root,int key,int *count_ptr);
+static node_t* createNode(int key);
 
 // Initializes the root of the bst
 void init_bst(bst_t *bst){
@@ -81,6 +81,7 @@ void clear_bst(bst_t *bst)
 }
 
 
+//Function returns a  address of a node created
 node_t* createNode(int key){
     node_t *element = (node_t*)malloc(sizeof(node_t));
     element->key = key;
@@ -88,42 +89,56 @@ node_t* createNode(int key){
     return element;
 }
 
+
+//Insert the element into the tree recursively
 node_t* insertNode(node_t *root,int key,int *count_ptr){
     (*count_ptr)++;
     if(root == NULL){
+        (*count_ptr)++;
         return(createNode(key));
 
     }
     else if(key > root->key){
+        (*count_ptr)++;
         root->right = insertNode(root->right,key,count_ptr);
     }    
     else{
+        (*count_ptr)++;
         root->left = insertNode(root->left,key,count_ptr);
     }
     return root;
 }
 
+
+//Deletes the Nodes specified by the key recursively
 node_t* deleteNode(node_t *root,int key,int *count_ptr){
     if(root == NULL){
+        (*count_ptr)++;
         return NULL;
     }
     if(key > root->key){
+        (*count_ptr)++;
         root->right = deleteNode(root->right,key,count_ptr);
     }
     else if(key < root->key){
+        (*count_ptr)++;
         root->left = deleteNode(root->left,key,count_ptr);
     }
     else{
         if(root->left == NULL && root->right == NULL){
+            (*count_ptr)++;
             free(root);
             return NULL;
         }
         else if(root->left == NULL || root->right == NULL){
+            (*count_ptr)++;
             node_t *temp;
             if(root->left == NULL){
+                (*count_ptr)++;
                 temp = root->right;
             }
             else{
+                (*count_ptr)++;
                 temp = root->left;
             }
             free(root);
@@ -131,6 +146,7 @@ node_t* deleteNode(node_t *root,int key,int *count_ptr){
 
         }
         else{
+            (*count_ptr)++;
             node_t *temp = findMinNode(root->right);
             root->key = temp->key;
             root->right = deleteNode(root->right,temp->key,count_ptr);
@@ -140,6 +156,8 @@ node_t* deleteNode(node_t *root,int key,int *count_ptr){
     return root;
 }
 
+
+//Finds the node in the BST with minimum value
 node_t* findMinNode(node_t *root){
     if(root == NULL){
         return NULL;
@@ -151,8 +169,10 @@ node_t* findMinNode(node_t *root){
 }
 
 
+//Finds the element present in the tree recursive code
 node_t* searchNode(node_t *root,int key,int *count_ptr){
     if(root == NULL || root->key == key){
+        (*count_ptr)++;
         return root;
     }
     else if(key > root->key){
@@ -164,8 +184,11 @@ node_t* searchNode(node_t *root,int key,int *count_ptr){
     }
 }
 
+
+//Finds the Node with maximum value in the tree
 node_t* findMaxNode(node_t *root,int *count_ptr){
     if(root == NULL){
+        (*count_ptr)++;
         return NULL;
     }
     else if(root->right !=NULL){
@@ -175,6 +198,8 @@ node_t* findMaxNode(node_t *root,int *count_ptr){
     return root;
 }
 
+
+//Deallocates the memory allocated to the nodes of the BST using recursion
 void freeNode(node_t *root){
     if(root == NULL){
         return;
