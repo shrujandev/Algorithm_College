@@ -23,7 +23,6 @@ static node_t* createNode(int key);
 void init_bst(bst_t *bst){
     bst->root = NULL;
     
-
 }
 
 // Inserts element key into the Binary search tree
