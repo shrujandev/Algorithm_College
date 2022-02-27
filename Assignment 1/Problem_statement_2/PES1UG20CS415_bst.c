@@ -36,9 +36,15 @@ void delete_element(bst_t *tree, int key, int *count_ptr){
 
 // Searches for the element key in the bst
 // Returns the element if found, else -1
-int search(const bst_t *tree, int key, int *count_ptr)
-{
+int search(const bst_t *tree, int key, int *count_ptr){
+    node_t *searchElement;
+    int searchValue = -1;
+    searchElement = searchNode(tree->root,key,count_ptr);
+    if(searchElement != NULL){
+        searchValue = searchElement->key;
+    }
 
+    return searchValue;
 }
 
 // Returns the maximum element in the BST
@@ -82,7 +88,7 @@ node_t* insertNode(node_t *root,int key,int *count_ptr){
     return root;
 }
 
-node_t *deleteNode(node_t *root,int key,int *count_ptr){
+node_t* deleteNode(node_t *root,int key,int *count_ptr){
     if(root == NULL){
         return NULL;
     }
@@ -117,4 +123,28 @@ node_t *deleteNode(node_t *root,int key,int *count_ptr){
         
     }
     return root;
+}
+
+node_t* findMinNode(node_t *root){
+    if(root == NULL){
+        return NULL;
+    }
+    else if(root->left != NULL){
+        return findMinNode(root->left);
+    }
+    return root;
+}
+
+
+node_t* searchNode(node_t *root,int key,int *count_ptr){
+    if(root == NULL || root->key == key){
+        return root;
+    }
+    else if(key > root->key){
+        (*count_ptr)++;
+        return searchNode(root->right,key,count_ptr);
+    }
+    else{
+        return searchNode(root->left,key,count_ptr);
+    }
 }
