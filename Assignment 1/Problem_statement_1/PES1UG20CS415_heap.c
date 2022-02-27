@@ -17,7 +17,7 @@
 // Set heap size to 0
 // Set heap max_size to paramter max_size
 // Allocate memory of max_size to the array
-void heapify(heap_t *heap,int parentNode,int heapifyLoop,int *count_ptr);
+static void heapify(heap_t *heap,int parentNode,int heapifyLoop,int *count_ptr);
 
 
 void init_heap(heap_t *heap, int max_size) {
@@ -32,6 +32,7 @@ void init_heap(heap_t *heap, int max_size) {
 // location pointed to by count_ptr.
 void insert(heap_t *heap, int key, int *count_ptr) {
     if(heap->size < heap->max_size){
+        (*count_ptr)++;
         heap->arr[heap->size] = key;
         heap->size++;
         int heapifyLoop = 1;
@@ -49,9 +50,10 @@ void insert(heap_t *heap, int key, int *count_ptr) {
 int extract_max(heap_t *heap, int *count_ptr) {
     int maxValue = 0;
     if(heap->size >= 0){
+        (*count_ptr)++;
         maxValue = heap->arr[0];
-        heap->arr[0]=0;
-        heap->size--;
+        heap->arr[0]=heap->arr[heap->size-1];
+        (heap->size)--; 
         for(int parentNode=(heap->size)/2-1;parentNode>=0;parentNode--){
             heapify(heap,parentNode,1,count_ptr);
         }
@@ -65,10 +67,11 @@ int search(const heap_t *heap, int key, int *count_ptr) {
     int searchElement = -1;
     int notFound = 1;
     for(int i =0 ;i<heap->size && notFound ;i++){
+        (*count_ptr)++;
         if(heap->arr[i]==key){
             searchElement = key;
             notFound = 0;
-            *count_ptr++;
+            (*count_ptr)++;
         }
     }
     return searchElement;
@@ -80,6 +83,7 @@ int search(const heap_t *heap, int key, int *count_ptr) {
 int find_max(const heap_t *heap, int *count_ptr) {
     int maxValue = -1;
     if(heap->size >=0){
+        (*count_ptr)++;
         maxValue = heap->arr[0];
     }
     return maxValue;
@@ -91,7 +95,7 @@ int find_min(const heap_t *heap, int *count_ptr) {
     for(int i = heap->arr[(heap->size)/2 -1];i<heap->size;i++){
         
         if(minValue > heap->arr[i]){
-            *count_ptr++;
+            (*count_ptr)++;
             minValue = heap->arr[i];
         }
     }
@@ -113,6 +117,7 @@ void free_heap(heap_t *heap) {
 }
     
 
+//Heapify Function 
 void heapify(heap_t *heap,int parentNode,int heapifyLoop,int *count_ptr){
     while(heapifyLoop == 1){
         if(heap->size !=1){
@@ -121,13 +126,14 @@ void heapify(heap_t *heap,int parentNode,int heapifyLoop,int *count_ptr){
             int rightNode = 2*parentNode+2;
             if(leftNode < heap->size && heap->arr[leftNode] > heap->arr[largest]){
                 largest = leftNode;
-                *count_ptr++;
+                (*count_ptr)++;
             }
             if(rightNode < heap->size && heap->arr[rightNode] > heap->arr[largest]){
                 largest = rightNode;
-                *count_ptr++;
+                (*count_ptr)++;
             }
             if(largest != parentNode){
+                (*count_ptr)++;
                 int temp = heap->arr[largest];
                 heap->arr[largest] = heap->arr[parentNode];
                 heap->arr[parentNode] = temp;
