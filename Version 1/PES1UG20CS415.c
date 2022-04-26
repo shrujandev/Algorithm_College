@@ -222,9 +222,14 @@ int q6(int n, int amount, const int entry_fee[n]){
     
 }
 
-void q7(int n, const char *pat, int contains[n], const airport_t airports[n])
-{
-
+void q7(int n, const char *pat, int contains[n], const airport_t airports[n]){
+    for(int i = 0;i < n;i++){
+        int t[500] = {0};
+        shiftTable(pat,t);
+        if(horspool(airports[i].airport_name,pat,t) >= 0){
+            contains[i] = 1; 
+        }
+    }
 }
 
 int q8(int n, int trip_order[n - 1], const connection_t connections[n][n])
