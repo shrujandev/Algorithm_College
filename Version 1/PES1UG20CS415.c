@@ -105,6 +105,35 @@ static int longestPrefix(airport_t fir, airport_t sec){
     return i;
 }
 
+static void shiftTable(const char p[],int t[]){
+    int i,j,m=0;
+    for(int x =0; p[x] != '\0';x++)
+        m++;
+    for( i = 0;i < 500;i++)
+        t[i] = m;
+    for(j = 0;j < m-1; j++)
+        t[p[j]-'0'] = m-1-j;
+}
+
+static int horspool(const char src[],const char p[],int t[]){
+    int i,k,m=0,n=0;
+    for(int x = 0 ; p[x] != '\0';x++)
+        m++;
+    for(int x = 0 ; src[x] != '\0';x++)
+        n++;
+    i=m-1;
+    while(i<n)
+    {
+        k=0;
+        while((k<m)&&(p[m-1-k]==src[i-k]))
+        k++;
+        if(k==m)
+        return(i-m+1);
+        else
+        i+=t[src[i]-'0'];
+    }
+    return -1;
+}
 
 // YOUR SOLUTIONS BELOW
 
@@ -170,9 +199,27 @@ pair_t q5(int n, airport_t airports[n])
     return ans;
 }
 
-int q6(int n, int amount, const int entry_fee[n])
-{
-    return 0;
+int q6(int n, int amount, const int entry_fee[n]){
+    int low=0, high=n-1;
+    int mid;
+        while(low <= high) {
+
+            mid = (low +high)/2; 
+
+
+            if(entry_fee[mid] == amount) {
+                return mid+1;
+            } 
+            else if(entry_fee[mid] < amount) {
+                low = mid+1;
+            } 
+            else { 
+                high = mid-1;
+            }
+        }
+
+        return low;
+    
 }
 
 void q7(int n, const char *pat, int contains[n], const airport_t airports[n])
