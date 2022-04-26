@@ -53,6 +53,20 @@ static void dfsQ2(int src, int *visited, int n, const connection_t graph[n][n], 
 
 }
 
+static void dfsQ3(int src, int *visited, int n, const connection_t graph[n][n], int dest, int *ans){
+    visited[src] = 1;
+    for(int i = src;i < n;i++){
+        for(int j = 0;j < n;j++){
+            if(graph[i][j].distance != __INT_MAX__ &&  j == src){
+                *ans = 1;
+            }
+            if(graph[i][j].distance != __INT_MAX__ &&  visited[j] != 1){
+                dfsQ3(j, visited, n, graph, dest, ans);
+            }
+            
+        }
+    }
+}
 // YOUR SOLUTIONS BELOW
 
 int q1(int n, const connection_t connections[n][n]){
@@ -79,15 +93,17 @@ int q2(const airport_t *src, const airport_t *dest, int n, int k,const connectio
 
     free(visited);
 
-    if(ans)
-        return 1;
-    else
-        return 0;
+    return ans;
 }
 
-int q3(const airport_t *src, int n, const connection_t connections[n][n])
-{
-    return 0;
+int q3(const airport_t *src, int n, const connection_t connections[n][n]){
+    int srcVal = src->num_id;
+    int *visited;
+    visited  = (int*)calloc(n,sizeof(int));
+    int ans = 0;
+
+    dfsQ3(srcVal, visited, n, connections, srcVal, &ans);
+    return ans;
 }
 
 void q4(int n, int (*predicate_func)(const airport_t *, const airport_t *),
