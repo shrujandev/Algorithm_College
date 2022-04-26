@@ -67,6 +67,8 @@ static void dfsQ3(int src, int *visited, int n, const connection_t graph[n][n], 
         }
     }
 }
+
+
 // YOUR SOLUTIONS BELOW
 
 int q1(int n, const connection_t connections[n][n]){
@@ -106,9 +108,8 @@ int q3(const airport_t *src, int n, const connection_t connections[n][n]){
     return ans;
 }
 
-void q4(int n, int (*predicate_func)(const airport_t *, const airport_t *),
-        airport_t airport_list[n])
-{
+void q4(int n, int (*predicate_func)(const airport_t *, const airport_t *),airport_t airport_list[n]){
+    quicksort(airport_list, 0, n-1,predicate_func);
 
 }
 
