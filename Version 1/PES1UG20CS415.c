@@ -68,6 +68,43 @@ static void dfsQ3(int src, int *visited, int n, const connection_t graph[n][n], 
     }
 }
 
+static void swap(airport_t *x, airport_t *y){
+    airport_t t = *x;
+    *x = *y;
+    *y = t;
+}
+
+static int partition(airport_t list[], int start, int end, int (*predicate_func)(const airport_t *, const airport_t *)){
+    int pIndex = start;
+    airport_t pivot = list[end];
+    
+    for(int i = start;i < end;i++){
+        if(predicate_func(&list[i], &pivot)){
+            swap(&list[i], &list[pIndex]);
+            pIndex++;
+        }
+    }
+
+    swap(&list[end], &list[pIndex]);
+    return pIndex;
+}
+
+static void quickSort(airport_t list[], int start, int end, int (*predicate_func)(const airport_t *,const airport_t *)){
+    if(start < end){
+        int pIndex = partition(list, start, end, predicate_func);
+        quickSort(list, start, pIndex-1, predicate_func);
+        quickSort(list, pIndex+1, end, predicate_func);
+    }
+}
+
+static int longestPrefix(airport_t fir, airport_t sec){
+    int i = 0;
+    while(fir.airport_name[i] != '\0' && sec.airport_name[i] != '\0' && fir.airport_name[i] == sec.airport_name[i] ){
+        i++;
+    }
+    return i;
+}
+
 
 // YOUR SOLUTIONS BELOW
 
@@ -109,13 +146,27 @@ int q3(const airport_t *src, int n, const connection_t connections[n][n]){
 }
 
 void q4(int n, int (*predicate_func)(const airport_t *, const airport_t *),airport_t airport_list[n]){
-    quicksort(airport_list, 0, n-1,predicate_func);
+    quickSort(airport_list, 0, n-1,predicate_func);
 
 }
 
 pair_t q5(int n, airport_t airports[n])
 {
     pair_t ans = {-1, -1};
+    int max = 0;
+    int len;
+
+    for(int i = 0;i < n;i++){
+        for(int j = i+1;j < n;j++){
+            len = longestPrefix(airports[i],airports[j]);
+            if(max < len){
+                max = len;
+                ans.first = airports[i].num_id;
+                ans.second = airports[j].num_id;
+            }
+        }
+    }
+
     return ans;
 }
 
