@@ -135,6 +135,59 @@ static int horspool(const char src[],const char p[],int t[]){
     return -1;
 }
 
+static void dijkstra(int n,const connection_t graph[n][n], int start, int *hash){
+    int cost[n][n], distance[n], pred[n];
+    int visited[n], count, minDistance, nextNode, i, j;
+
+    for(i = 0;i < n;i++){
+        for(j = 0;j < n;j++){
+            if(graph[i][j].time == 0){
+                cost[i][j] = INT_MAX;
+            }
+            else{
+                cost[i][j] = graph[i][j].time;
+            }
+        }
+    }
+
+    for(i = 0;i < n; i++){
+        distance[i] = cost[start][i];
+        pred[i] = start;
+        visited[i] = 0;
+    }
+
+    distance[start] = 0;
+    visited[start] = 1;
+    count = 1;
+
+    while(count < n-1){
+        minDistance = INT_MAX;
+
+        for(i = 0;i < n; i++){
+            if(distance[i] < minDistance && !visited[i]){
+                minDistance = distance[i];
+                nextNode = i;
+            }
+        }
+
+        visited[nextNode] = 1;
+        for(i = 0;i < n;i++){
+            if(!visited[i]){
+                if(minDistance + cost[nextNode][i] < distance[i]){
+                    distance[i] = minDistance + cost[nextNode][i];
+                    pred[i] = nextNode;
+                }
+            }
+        }
+        count++;
+    } 
+
+    for(i = 0;i < n;i++){
+        if( i != start){
+            hash[i] = distance[i];
+        }
+    }
+}
 // YOUR SOLUTIONS BELOW
 
 int q1(int n, const connection_t connections[n][n]){
@@ -242,10 +295,14 @@ int q9(int n, pair_t edges[n - 1], const connection_t connections[n][n])
     return 0;
 }
 
-void q10(int n, int k, const airport_t *src,
-         const connection_t connections[n][n], const int destinations[k],
-         int costs[k])
-{
+void q10(int n, int k, const airport_t *src,const connection_t connections[n][n], const int destinations[k],int costs[k]){
+    int hash[n];
+    dijkstra(n, connections,src->num_id, hash);
+    int i = 0;
+    while( i != k){
+        costs[i] = hash[destinations[i]];
+        i++;
+    }
 
 }
 
